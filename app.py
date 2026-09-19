@@ -15,7 +15,7 @@ st.markdown("### Integer-Native Row-Collapse (Rows) vs. Naive Brute-Force (Dots)
 
 # Session State for Animation Loop
 if 'radius' not in st.session_state:
-    st.session_state.radius = 15
+    st.session_state.radius = 5
 
 # Sidebar Controls
 st.sidebar.header("Parameters")
@@ -62,17 +62,15 @@ if algorithm_choice in ["Comparison (Both)", "Naive Brute-Force (Dots)"]:
         x=naive_x, y=naive_y,
         mode='markers',
         name='Naive Points',
-        marker=dict(size=6, color='#60a5fa', symbol='circle')
+        marker=dict(size=5, color='#60a5fa', symbol='circle')
     ))
 
 # 2. Row-Collapse Trace (Actual Horizontal Rows)
 if algorithm_choice in ["Comparison (Both)", "Row-Collapse (Rows)"]:
-    # We build line segments for each row y
     row_x_lines = []
     row_y_lines = []
     
     for y in range(-radius, radius + 1):
-        # Find valid x span for this row y
         valid_xs = []
         for x in range(-radius, radius + 1):
             check_val = x**2 + y**2 + (z_slice**2 if dimension_mode == "3D Slice" else 0)
@@ -81,7 +79,6 @@ if algorithm_choice in ["Comparison (Both)", "Row-Collapse (Rows)"]:
         
         if valid_xs:
             x_min, x_max = min(valid_xs), max(valid_xs)
-            # Add line segment coordinates separated by None to keep them as individual row bars
             row_x_lines.extend([x_min, x_max, None])
             row_y_lines.extend([y, y, None])
 
@@ -89,15 +86,16 @@ if algorithm_choice in ["Comparison (Both)", "Row-Collapse (Rows)"]:
         x=row_x_lines, y=row_y_lines,
         mode='lines',
         name='Row-Collapse Spans',
-        line=dict(color='#4ade80', width=4)
+        line=dict(color='#4ade80', width=3)
     ))
 
+# LOCKED AXIS RANGES (-42 to 42) so the grid is static and the shape genuinely grows
 fig.update_layout(
     plot_bgcolor='#0f172a',
     paper_bgcolor='#0f172a',
     font=dict(color='white'),
-    xaxis=dict(showgrid=True, gridcolor='#1e293b', zerolinecolor='#334155'),
-    yaxis=dict(showgrid=True, gridcolor='#1e293b', zerolinecolor='#334155', scaleanchor="x", scaleratio=1),
+    xaxis=dict(showgrid=True, gridcolor='#1e293b', zerolinecolor='#334155', range=[-42, 42], autorange=False),
+    yaxis=dict(showgrid=True, gridcolor='#1e293b', zerolinecolor='#334155', scaleanchor="x", scaleratio=1, range=[-42, 42], autorange=False),
     margin=dict(l=20, r=20, t=20, b=20),
     height=420,
     legend=dict(x=0.02, y=0.98)
@@ -122,9 +120,9 @@ st.markdown("*Hosted live as part of the **orthotropic-parity-and-discrete-pi** 
 
 # --- AUTO-PLAY HANDLER ---
 if play_animation:
-    time.sleep(0.15)
+    time.sleep(0.12)
     next_r = radius + 1
-    if next_r > 35:
+    if next_r > 40:
         next_r = 5
     st.session_state.radius = next_r
     st.rerun()
