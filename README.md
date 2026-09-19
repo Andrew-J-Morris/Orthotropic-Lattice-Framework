@@ -11,31 +11,31 @@ g++ -O3 -std=c++20 O_r3_to_O_r2_benchmark.cpp -o benchmark && ./benchmark
 
 **Discrete Geometry First: Collapsing High-Dimensional Lattice Enumeration from O(r^N) to Quasi-Quadratic O(r^2 log_2 N log r)**
 
-For over two centuries, the standard approach to discrete lattice point enumeration has relied on continuous Euclidean tools—transcendental functions, Bessel expansions, modular forms, and floating-point approximations—projected onto integer grids[cite: 4, 15]. This approach frequently runs into boundary-vertex collisions, floating-point precision drift, and the classical exponential coordinate bottleneck[cite: 4, 17].
+For over two centuries, the standard approach to discrete lattice point enumeration has relied on continuous Euclidean tools—transcendental functions, Bessel expansions, modular forms, and floating-point approximations—projected onto integer grids. This approach frequently runs into boundary-vertex collisions, floating-point precision drift, and the classical exponential coordinate bottleneck.
 
-Instead of forcing continuous calculus onto discrete space, I developed an integer-native geometric framework that treats discrete grids on their own native algebraic terms[cite: 4, 15]. By recognizing that squared Euclidean distance is additively separable across orthogonal submanifolds, high-dimensional boundaries can be decoupled and evaluated via single-pass integer dot products and discrete cross-convolutions[cite: 8, 10].
+Instead of forcing continuous calculus onto discrete space, I developed an integer-native geometric framework that treats discrete grids on their own native algebraic terms. By recognizing that squared Euclidean distance is additively separable across orthogonal submanifolds, high-dimensional boundaries can be decoupled and evaluated via single-pass integer dot products and discrete cross-convolutions.
 
 The complete research suite consists of four preprints establishing the theoretical derivations, asymptotic complexity proofs, and hardware-native C++ reference implementations:
 
 *   **Paper I: An Integer-Only Orthotropic Lattice Enumeration Framework and Asymptotic Convergence of Discrete Rational π**
-    *   *Core Premise:* Couples orthotropic boundaries 4r ± 1 to construct Diophantine parity constraints that mathematically prohibit boundary-vertex collisions[cite: 6, 15].
-    *   *Result:* Resolves boundary discrepancy and derives a deterministic, rational convergence envelope for discrete π_d ∈ ℚ[cite: 6, 15].
-    *   *Zenodo DOI:* [10.5281/zenodo.22282210](https://doi.org/10.5281/zenodo.22282210)[cite: 4, 6] | *GitHub:* [Orthotropic-Lattice-Framework](https://github.com/Andrew-J-Morris/Orthotropic-Lattice-Framework)[cite: 6]
+    *   *Core Premise:* Couples orthotropic boundaries 4r ± 1 to construct Diophantine parity constraints that mathematically prohibit boundary-vertex collisions.
+    *   *Result:* Resolves boundary discrepancy and derives a deterministic, rational convergence envelope for discrete π_d ∈ ℚ.
+    *   *Zenodo DOI:* [10.5281/zenodo.22282210](https://doi.org/10.5281/zenodo.22282210) | *GitHub:* [orthotropic-parity-and-discrete-pi](https://github.com/Andrew-J-Morris/orthotropic-parity-and-discrete-pi)
 
 *   **Paper II: A Dimension-Paired Combinatorial Framework: Asymptotic O(r^2) Reduction and O(r^2 log_2 N log r) Generalized Convolution for High-Dimensional Discrete Lattice Enumeration**
-    *   *Core Premise:* Decomposes 4D space as orthogonal planes (Z^4 ≅ Z^2 × Z^2), reducing 4-space enumeration from O(r^4) to a single-pass 1D dot product in strict O(r^2) without floating-point operations[cite: 5, 8].
-    *   *Generalization:* Applies recursive bisection via Number Theoretic Transforms (NTT) in finite fields Z_p[t], collapsing N-dimensional ball enumeration to O(r^2 log_2 N log r)[cite: 5, 8].
-    *   *Zenodo DOI:* [10.5281/zenodo.22509388](https://doi.org/10.5281/zenodo.22509388)[cite: 5] | *GitHub:* [dimension-paired-lattice-framework](https://github.com/Andrew-J-Morris/dimension-paired-lattice-framework)[cite: 5]
+    *   *Core Premise:* Decomposes 4D space as orthogonal planes (Z^4 ≅ Z^2 × Z^2), reducing 4-space enumeration from O(r^4) to a single-pass 1D dot product in strict O(r^2) without floating-point operations.
+    *   *Generalization:* Applies recursive bisection via Number Theoretic Transforms (NTT) in finite fields Z_p[t], collapsing N-dimensional ball enumeration to O(r^2 log_2 N log r).
+    *   *Zenodo DOI:* [10.5281/zenodo.22509388](https://doi.org/10.5281/zenodo.22509388) | *GitHub:* [dimension-paired-cross-convolution](https://github.com/Andrew-J-Morris/dimension-paired-cross-convolution)
 
 *   **Paper III: Hierarchical Dimension-Pairing: Hardware-Native O(r^2) Enumeration of 5D through 8D Spherical Lattices and High-Dimensional Capacity Limits**
-    *   *Core Premise:* Neutralizes the historical odd-dimension class-number barrier for Z^5 and Z^7 by slicing 1D axial profiles against precomputed even-dimensional hyperdisk profiles[cite: 9, 10].
-    *   *Empirical Scaling:* Verifies sequences against OEIS baselines (A000333–A000336), and benchmarks a 1024-dimensional R = 2896 hyperball (output = 831168560 (mod 998244353)) in 1561.833 ms on a single desktop core[cite: 9, 10].
-    *   *Zenodo DOI:* [10.5281/zenodo.22691273](https://doi.org/10.5281/zenodo.22691273)[cite: 9] | *GitHub:* [Hierarchical-Dimension-Pairing-Framework](https://github.com/Andrew-J-Morris/Hierarchical-Dimension-Pairing-Framework)
+    *   *Core Premise:* Neutralizes the historical odd-dimension class-number barrier for Z^5 and Z^7 by slicing 1D axial profiles against precomputed even-dimensional hyperdisk profiles.
+    *   *Empirical Scaling:* Verifies sequences against OEIS baselines (A000333–A000336), and benchmarks a 1024-dimensional R = 2896 hyperball (output = 831168560 (mod 998244353)) in 1561.833 ms on a single desktop core.
+    *   *Zenodo DOI:* [10.5281/zenodo.22691273](https://doi.org/10.5281/zenodo.22691273) | *GitHub:* [hierarchical-ntt-bisection](https://github.com/Andrew-J-Morris/hierarchical-ntt-bisection)
 
 *   **Paper IV: Parity-Filtered Bisection: Hardware-Native O(r^2) Enumeration of Optimal D_N Lattices**
-    *   *Core Premise:* Extends the bisection architecture beyond primitive grids to dense, non-orthogonal kissing-number lattices[cite: 3, 14]. By redefining geometries as parity-constrained sublattices of Z^N (∑ x_i ≡ 0 (mod 2)), internal coordinate staggering is fully absorbed into pre-filtered arrays[cite: 3, 14].
-    *   *Result:* Achieves hardware-native O(r^2) exact enumeration for Face-Centered Cubic (D_3), the 24-cell honeycomb (D_4), and the D_8 root lattice, verified bit-for-bit against OEIS A005875, A004011, and A004013[cite: 3].
-    *   *Zenodo DOI:* [10.5281/zenodo.22824219](https://doi.org/10.5281/zenodo.22824219) | *GitHub:* [Parity-Filtered-Bisection-DN-Lattices](https://github.com/Andrew-J-Morris/Parity-Filtered-Bisection-DN-Lattices)
+    *   *Core Premise:* Extends the bisection architecture beyond primitive grids to dense, non-orthogonal kissing-number lattices. By redefining geometries as parity-constrained sublattices of Z^N (∑ x_i ≡ 0 (mod 2)), internal coordinate staggering is fully absorbed into pre-filtered arrays.
+    *   *Result:* Achieves hardware-native O(r^2) exact enumeration for Face-Centered Cubic (D_3), the 24-cell honeycomb (D_4), and the D_8 root lattice, verified bit-for-bit against OEIS A005875, A004011, and A004013.
+    *   *Zenodo DOI:* [10.5281/zenodo.22824219](https://doi.org/10.5281/zenodo.22824219) | *GitHub:* [parity-filtered-kissing-lattices](https://github.com/Andrew-J-Morris/parity-filtered-kissing-lattices)
 
 **The Empirical Validation**
 
