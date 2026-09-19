@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
+import time
 
 # Page Config
 st.set_page_config(
@@ -12,9 +13,19 @@ st.set_page_config(
 st.title("Voxelization Algorithm Comparison")
 st.markdown("### Integer-Native Row-Collapse vs. Naive Brute-Force Grid Enumeration")
 
+# Session State for Animation Loop
+if 'radius' not in st.session_state:
+    st.session_state.radius = 15
+
 # Sidebar Controls
 st.sidebar.header("Parameters")
-radius = st.sidebar.slider("Radius (R)", min_value=5, max_value=50, value=20, step=1)
+
+# Play / Pause Autoplay Toggle
+play_animation = st.sidebar.checkbox("▶ Auto-Play Animation")
+
+radius = st.sidebar.slider("Radius (R)", min_value=5, max_value=40, value=st.session_state.radius, step=1)
+st.session_state.radius = radius
+
 dimension_mode = st.sidebar.radio("View Mode", ["2D", "3D Slice"])
 
 if dimension_mode == "3D Slice":
@@ -59,7 +70,7 @@ fig = go.Figure()
 fig.add_trace(go.Scatter(
     x=x_pts, y=y_pts,
     mode='markers',
-    marker=dict(size=8, color='#4ade80' if algorithm_choice != "Naive O(r^N)" else '#60a5fa', symbol='circle')
+    marker=dict(size=max(4, 12 - int(radius/4)), color='#4ade80' if algorithm_choice != "Naive O(r^N)" else '#60a5fa', symbol='circle')
 ))
 
 fig.update_layout(
@@ -69,7 +80,7 @@ fig.update_layout(
     xaxis=dict(showgrid=True, gridcolor='#1e293b', zerolinecolor='#334155'),
     yaxis=dict(showgrid=True, gridcolor='#1e293b', zerolinecolor='#334155', scaleanchor="x", scaleratio=1),
     margin=dict(l=20, r=20, t=20, b=20),
-    height=450
+    height=420
 )
 
 # Render Plot
@@ -88,3 +99,12 @@ with col3:
 # Footer note
 st.markdown("---")
 st.markdown("*Hosted live as part of the **orthotropic-parity-and-discrete-pi** benchmark toolkit.*")
+
+# --- AUTO-PLAY HANDLER ---
+if play_animation:
+    time.sleep(0.12)
+    next_r = radius + 1
+    if next_r > 40:
+        next_r = 5
+    st.session_state.radius = next_r
+    st.rerun()
