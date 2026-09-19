@@ -1,4 +1,4 @@
-# Orthotropic Lattice Framework
+# orthotropic parity and discrete pi
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22282210.svg)](https://doi.org/10.5281/zenodo.22282210)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -51,10 +51,10 @@ All four preprints, source code, and benchmark suites are open-access. Feedback 
 ### The Discrete Lattice Research Suite
 This repository is part of a 4-paper research program establishing hardware-native, integer-only lattice enumeration:
 
-1. **[Orthotropic-Lattice-Framework](https://github.com/Andrew-J-Morris/Orthotropic-Lattice-Framework):** 3D row-collapse, 4r ± 1 parity bounds, and rational π_d ∈ ℚ convergence. [[Zenodo DOI: 10.5281/zenodo.22282210](https://doi.org/10.5281/zenodo.22282210)]
-2. **[dimension-paired-lattice-framework](https://github.com/Andrew-J-Morris/dimension-paired-lattice-framework):** 4D orthogonal plane bisection (O(r^2)) and generalized NTT convolution (O(r^2 log_2 N log r)). [[Zenodo DOI: 10.5281/zenodo.22509388](https://doi.org/10.5281/zenodo.22509388)]
-3. **[Hierarchical-Dimension-Pairing-Framework](https://github.com/Andrew-J-Morris/Hierarchical-Dimension-Pairing-Framework):** 5D–8D odd-dimension slicing, OEIS A000333–A000336 verification, and N=1024 NTT scaling. [[Zenodo DOI: 10.5281/zenodo.22691273](https://doi.org/10.5281/zenodo.22691273)]
-4. **[Parity-Filtered-Bisection-DN-Lattices](https://github.com/Andrew-J-Morris/Parity-Filtered-Bisection-DN-Lattices):** Exact O(r^2) kissing-number root lattices (D_3 FCC, D_4 24-cell, and D_8). [[Zenodo DOI: 10.5281/zenodo.22824219](https://doi.org/10.5281/zenodo.22824219)]
+1. **[orthotropic-parity-and-discrete-pi](https://github.com/Andrew-J-Morris/orthotropic-parity-and-discrete-pi):** 3D row-collapse, 4r ± 1 parity bounds, and rational π_d ∈ ℚ convergence. [[Zenodo DOI: 10.5281/zenodo.22282210](https://doi.org/10.5281/zenodo.22282210)]
+2. **[dimension-paired-cross-convolution](https://github.com/Andrew-J-Morris/dimension-paired-cross-convolution):** 4D orthogonal plane bisection (O(r^2)) and generalized NTT convolution (O(r^2 log_2 N log r)). [[Zenodo DOI: 10.5281/zenodo.22509388](https://doi.org/10.5281/zenodo.22509388)]
+3. **[hierarchical-ntt-bisection](https://github.com/Andrew-J-Morris/hierarchical-ntt-bisection):** 5D–8D odd-dimension slicing, OEIS A000333–A000336 verification, and N=1024 NTT scaling. [[Zenodo DOI: 10.5281/zenodo.22691273](https://doi.org/10.5281/zenodo.22691273)]
+4. **[parity-filtered-kissing-lattices](https://github.com/Andrew-J-Morris/parity-filtered-kissing-lattices):** Exact O(r^2) kissing-number root lattices (D_3 FCC, D_4 24-cell, and D_8). [[Zenodo DOI: 10.5281/zenodo.22824219](https://doi.org/10.5281/zenodo.22824219)]
 
 ---
 
