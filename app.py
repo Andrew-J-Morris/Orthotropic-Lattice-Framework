@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 st.title("Voxelization Algorithm Comparison")
-st.markdown("### Integer-Native Row-Collapse vs. Naive Brute-Force Grid Enumeration")
+st.markdown("### Integer-Native Row-Collapse (Rows) vs. Naive Brute-Force (Dots)")
 
 # Session State for Animation Loop
 if 'radius' not in st.session_state:
@@ -19,8 +19,6 @@ if 'radius' not in st.session_state:
 
 # Sidebar Controls
 st.sidebar.header("Parameters")
-
-# Play / Pause Autoplay Toggle
 play_animation = st.sidebar.checkbox("▶ Auto-Play Animation")
 
 radius = st.sidebar.slider("Radius (R)", min_value=5, max_value=40, value=st.session_state.radius, step=1)
@@ -33,7 +31,7 @@ if dimension_mode == "3D Slice":
 else:
     z_slice = 0
 
-algorithm_choice = st.sidebar.selectbox("Algorithm Display", ["Comparison (Both)", "Naive O(r^N)", "Row-Collapse O(r^2)"])
+algorithm_choice = st.sidebar.selectbox("Algorithm Display", ["Comparison (Both)", "Naive Brute-Force (Dots)", "Row-Collapse (Rows)"])
 
 # --- CORE ALGORITHM & METRIC SIMULATION ---
 if dimension_mode == "2D":
@@ -47,31 +45,52 @@ else:
 
 efficiency_delta = naive_ops / max(1, row_collapse_ops)
 
-# --- GENERATE PLOTLY DATA ---
-def generate_points(r, mode, z):
-    points_x, points_y = [], []
-    if mode == "2D":
-        for y in range(-r, r + 1):
-            for x in range(-r, r + 1):
-                if x**2 + y**2 <= r**2:
-                    points_x.append(x)
-                    points_y.append(y)
-    else:
-        for y in range(-r, r + 1):
-            for x in range(-r, r + 1):
-                if x**2 + y**2 + z**2 <= r**2:
-                    points_x.append(x)
-                    points_y.append(y)
-    return points_x, points_y
-
-x_pts, y_pts = generate_points(radius, dimension_mode, z_slice)
-
+# --- GENERATE PLOTLY TRACES ---
 fig = go.Figure()
-fig.add_trace(go.Scatter(
-    x=x_pts, y=y_pts,
-    mode='markers',
-    marker=dict(size=max(4, 12 - int(radius/4)), color='#4ade80' if algorithm_choice != "Naive O(r^N)" else '#60a5fa', symbol='circle')
-))
+
+# 1. Naive Trace (Dot Grid)
+if algorithm_choice in ["Comparison (Both)", "Naive Brute-Force (Dots)"]:
+    naive_x, naive_y = [], []
+    for y in range(-radius, radius + 1):
+        for x in range(-radius, radius + 1):
+            check_val = x**2 + y**2 + (z_slice**2 if dimension_mode == "3D Slice" else 0)
+            if check_val <= radius**2:
+                naive_x.append(x)
+                naive_y.append(y)
+                
+    fig.add_trace(go.Scatter(
+        x=naive_x, y=naive_y,
+        mode='markers',
+        name='Naive Points',
+        marker=dict(size=6, color='#60a5fa', symbol='circle')
+    ))
+
+# 2. Row-Collapse Trace (Actual Horizontal Rows)
+if algorithm_choice in ["Comparison (Both)", "Row-Collapse (Rows)"]:
+    # We build line segments for each row y
+    row_x_lines = []
+    row_y_lines = []
+    
+    for y in range(-radius, radius + 1):
+        # Find valid x span for this row y
+        valid_xs = []
+        for x in range(-radius, radius + 1):
+            check_val = x**2 + y**2 + (z_slice**2 if dimension_mode == "3D Slice" else 0)
+            if check_val <= radius**2:
+                valid_xs.append(x)
+        
+        if valid_xs:
+            x_min, x_max = min(valid_xs), max(valid_xs)
+            # Add line segment coordinates separated by None to keep them as individual row bars
+            row_x_lines.extend([x_min, x_max, None])
+            row_y_lines.extend([y, y, None])
+
+    fig.add_trace(go.Scatter(
+        x=row_x_lines, y=row_y_lines,
+        mode='lines',
+        name='Row-Collapse Spans',
+        line=dict(color='#4ade80', width=4)
+    ))
 
 fig.update_layout(
     plot_bgcolor='#0f172a',
@@ -80,7 +99,8 @@ fig.update_layout(
     xaxis=dict(showgrid=True, gridcolor='#1e293b', zerolinecolor='#334155'),
     yaxis=dict(showgrid=True, gridcolor='#1e293b', zerolinecolor='#334155', scaleanchor="x", scaleratio=1),
     margin=dict(l=20, r=20, t=20, b=20),
-    height=420
+    height=420,
+    legend=dict(x=0.02, y=0.98)
 )
 
 # Render Plot
@@ -102,9 +122,9 @@ st.markdown("*Hosted live as part of the **orthotropic-parity-and-discrete-pi** 
 
 # --- AUTO-PLAY HANDLER ---
 if play_animation:
-    time.sleep(0.12)
+    time.sleep(0.15)
     next_r = radius + 1
-    if next_r > 40:
+    if next_r > 35:
         next_r = 5
     st.session_state.radius = next_r
     st.rerun()
