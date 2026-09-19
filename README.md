@@ -1,4 +1,4 @@
-# Orthotropic Lattice Framework (OLF)
+# Orthotropic Lattice Framework
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22282210.svg)](https://doi.org/10.5281/zenodo.22282210)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -55,3 +55,9 @@ This repository is part of a 4-paper research program establishing hardware-nati
 2. **[dimension-paired-lattice-framework](https://github.com/Andrew-J-Morris/dimension-paired-lattice-framework):** 4D orthogonal plane bisection (O(r^2)) and generalized NTT convolution (O(r^2 log_2 N log r)). [[Zenodo DOI: 10.5281/zenodo.22509388](https://doi.org/10.5281/zenodo.22509388)]
 3. **[Hierarchical-Dimension-Pairing-Framework](https://github.com/Andrew-J-Morris/Hierarchical-Dimension-Pairing-Framework):** 5D–8D odd-dimension slicing, OEIS A000333–A000336 verification, and N=1024 NTT scaling. [[Zenodo DOI: 10.5281/zenodo.22691273](https://doi.org/10.5281/zenodo.22691273)]
 4. **[Parity-Filtered-Bisection-DN-Lattices](https://github.com/Andrew-J-Morris/Parity-Filtered-Bisection-DN-Lattices):** Exact O(r^2) kissing-number root lattices (D_3 FCC, D_4 24-cell, and D_8). [[Zenodo DOI: 10.5281/zenodo.22824219](https://doi.org/10.5281/zenodo.22824219)]
+
+
+---
+
+## ⚖️ License
+This project is licensed under the MIT License - see the LICENSE file for details.
