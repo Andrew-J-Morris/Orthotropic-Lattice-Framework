@@ -25,14 +25,11 @@ else:
 algorithm_choice = st.sidebar.selectbox("Algorithm Display", ["Comparison (Both)", "Naive O(r^N)", "Row-Collapse O(r^2)"])
 
 # --- CORE ALGORITHM & METRIC SIMULATION ---
-# Naive algorithm checks every point in the bounding box: (2R+1)^dimension
 if dimension_mode == "2D":
     naive_ops = (2 * radius + 1) ** 2
-    # Row collapse only evaluates valid span endpoints per row
     row_collapse_ops = sum(1 for y in range(-radius, radius+1) for x in range(-radius, radius+1) if x**2 + y**2 <= radius**2)
 else:
     naive_ops = (2 * radius + 1) ** 3
-    # 3D slice approximation of operations
     row_collapse_ops = sum(1 for y in range(-radius, radius+1) for x in range(-radius, radius+1) if x**2 + y**2 + z_slice**2 <= radius**2)
     if row_collapse_ops == 0:
         row_collapse_ops = max(10, int(naive_ops / 30))
@@ -48,7 +45,7 @@ def generate_points(r, mode, z):
                 if x**2 + y**2 <= r**2:
                     points_x.append(x)
                     points_y.append(y)
-    else: # 3D Slice
+    else:
         for y in range(-r, r + 1):
             for x in range(-r, r + 1):
                 if x**2 + y**2 + z**2 <= r**2:
@@ -78,7 +75,7 @@ fig.update_layout(
 # Render Plot
 st.plotly_chart(fig, use_container_width=True)
 
-# --- METRICS DASHBOARD (Matching your widget footer) ---
+# --- METRICS DASHBOARD ---
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -88,6 +85,6 @@ with col2:
 with col3:
     st.metric(label="EFFICIENCY DELTA", value=f"{efficiency_delta:.1f}x")
 
-# Footer note for repo visitors
+# Footer note
 st.markdown("---")
-*Hosted locally as part of the **orthotropic-parity-and-discrete-pi** benchmark toolkit.*
+st.markdown("*Hosted live as part of the **orthotropic-parity-and-discrete-pi** benchmark toolkit.*")
