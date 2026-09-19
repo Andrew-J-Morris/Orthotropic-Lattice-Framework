@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 st.title("Voxelization Algorithm Comparison")
-st.markdown("### Integer-Native Row-Collapse (Rows) vs. Naive Brute-Force (Dots)")
+st.markdown("### Integer-Native Row-Collapse vs. Naive Brute-Force Grid")
 
 # Session State for Animation Loop
 if 'radius' not in st.session_state:
@@ -31,7 +31,8 @@ if dimension_mode == "3D Slice":
 else:
     z_slice = 0
 
-algorithm_choice = st.sidebar.selectbox("Algorithm Display", ["Comparison (Both)", "Naive Brute-Force (Dots)", "Row-Collapse (Rows)"])
+# Cleaned up selection: No more messy combined view
+algorithm_choice = st.sidebar.selectbox("Algorithm Display", ["Naive Brute-Force (Dots)", "Row-Collapse (Rows)"])
 
 # --- CORE ALGORITHM & METRIC SIMULATION ---
 if dimension_mode == "2D":
@@ -48,8 +49,7 @@ efficiency_delta = naive_ops / max(1, row_collapse_ops)
 # --- GENERATE PLOTLY TRACES ---
 fig = go.Figure()
 
-# 1. Naive Trace (Dot Grid)
-if algorithm_choice in ["Comparison (Both)", "Naive Brute-Force (Dots)"]:
+if algorithm_choice == "Naive Brute-Force (Dots)":
     naive_x, naive_y = [], []
     for y in range(-radius, radius + 1):
         for x in range(-radius, radius + 1):
@@ -58,17 +58,19 @@ if algorithm_choice in ["Comparison (Both)", "Naive Brute-Force (Dots)"]:
                 naive_x.append(x)
                 naive_y.append(y)
                 
+    # Spaced-out discrete nodes with background showing through
     fig.add_trace(go.Scatter(
         x=naive_x, y=naive_y,
         mode='markers',
-        name='Naive Points',
-        marker=dict(size=5, color='#60a5fa', symbol='circle')
+        name='Discrete Grid Nodes',
+        marker=dict(size=4, color='#38bdf8', symbol='circle', opacity=0.85)
     ))
 
-# 2. Row-Collapse Trace (Actual Horizontal Rows)
-if algorithm_choice in ["Comparison (Both)", "Row-Collapse (Rows)"]:
+elif algorithm_choice == "Row-Collapse (Rows)":
     row_x_lines = []
     row_y_lines = []
+    endpoint_x = []
+    endpoint_y = []
     
     for y in range(-radius, radius + 1):
         valid_xs = []
@@ -79,17 +81,31 @@ if algorithm_choice in ["Comparison (Both)", "Row-Collapse (Rows)"]:
         
         if valid_xs:
             x_min, x_max = min(valid_xs), max(valid_xs)
+            # Row span lines
             row_x_lines.extend([x_min, x_max, None])
             row_y_lines.extend([y, y, None])
+            
+            # Isolate the exact endpoint on ONE side (right side: x_max) that is physically counted
+            endpoint_x.append(x_max)
+            endpoint_y.append(y)
 
+    # Draw the row spans
     fig.add_trace(go.Scatter(
         x=row_x_lines, y=row_y_lines,
         mode='lines',
-        name='Row-Collapse Spans',
+        name='Row Spans',
         line=dict(color='#4ade80', width=3)
     ))
+    
+    # Highlight the counted endpoints on one side of the circle
+    fig.add_trace(go.Scatter(
+        x=endpoint_x, y=endpoint_y,
+        mode='markers',
+        name='Evaluated Boundary Endpoints (Counted)',
+        marker=dict(size=8, color='#facc15', symbol='diamond')
+    ))
 
-# LOCKED AXIS RANGES (-42 to 42) so the grid is static and the shape genuinely grows
+# Static locked grid layout (-42 to 42)
 fig.update_layout(
     plot_bgcolor='#0f172a',
     paper_bgcolor='#0f172a',
@@ -120,7 +136,7 @@ st.markdown("*Hosted live as part of the **orthotropic-parity-and-discrete-pi** 
 
 # --- AUTO-PLAY HANDLER ---
 if play_animation:
-    time.sleep(0.12)
+    time.sleep(0.15)
     next_r = radius + 1
     if next_r > 40:
         next_r = 5
